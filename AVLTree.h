@@ -99,16 +99,33 @@ public:
 			else if (parent->_bf == -2)
 			{
 				//左边高，右单旋
-				if (parent->_left == -1)
+				if (cur->_bf == -1)
 				{
-
+					RotateR(parent);
+				}
+				//左右单旋
+				else if (cur->_bf == 1)
+				{
+					RotateLR(parent);
+				}
+				else
+				{
+					std::cout << "balancing factor > 2, bug generated.\n";
+					return false;
 				}
 			}
 			else if (parent->_bf == 2)
 			{
-				//左边高，右单旋
-				//left side have more nodes, rorate to the right
-				//把根按下去，根成为左子树的右边，所有在根->左边的->右边的数接在根的左边
+				//右边高，左单旋
+				if (cur->_bf == 1)
+				{
+					RotateL(parent);
+				}
+				//右左单旋
+				else if (cur->_bf == -1)
+				{
+					RotateRL(parent);
+				}
 			}
 			else
 			{
@@ -164,5 +181,45 @@ private:
 
 		if (parent == _root)
 			_root = parent;
+	}
+
+	void RotateL(Node* parent)
+	{
+		Node* grandparent = parent->_parent;
+		Node* newParent = parent->_right;
+		Node* subL = newParent->_left;
+		if (grandparent)
+		{
+			if (grandparent->_left == parent)
+				grandparent->_left = newParent;
+			else
+				grandparent->_right = newParent;
+		}
+		newParent->_left = parent;
+		parent->_parent = newParent;
+
+		newParent->_parent = grandparent;
+
+		parent->_right = subL;
+		if (subL)
+		{
+			subL->_parent = parent;
+
+		}
+		newParent->_bf = 0;
+		parent->_bf = 0;
+
+		if (parent == _root)
+			_root = parent;
+	}
+	void RotateLR(Node* parent)
+	{
+		RotateL(parent->_left);
+		RotateR(parent);
+	}
+	void RotateRL(Node* parent)
+	{
+		RotateL(parent->_right);
+		RotateR(parent);
 	}
 };
