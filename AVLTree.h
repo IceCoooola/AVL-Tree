@@ -230,15 +230,57 @@ private:
     }
     void RotateLR(Node* parent)
     {
+        Node* subL = parent->_left;
+        Node* subLR = subL->_right;
+        int bf = subLR->_bf;
         RotateL(parent->_left);
         RotateR(parent);
+        if(bf == 1)
+        {
+            subL->_bf = -1;
+            parent->_bf = 0;
+            subLR->_bf = 0;
+        }
+        else if (bf == -1)
+        {
+            parent->_bf = 1;
+            subL->_bf = 0;
+            subLR->_bf = 0;
+        }
+        else
+        {
+        
+            parent->_bf = 0;
+            subL->_bf = 0;
+            subLR->_bf = 0;
+        }
     }
     void RotateRL(Node* parent)
     {
+        Node* subR = parent->_right;
+        Node* subRL = subR->_left;
+        int bf = subRL->_bf;
         RotateR(parent->_right);
         RotateL(parent);
-    }
-    Node* _find(Node* root, const K& key)
+        if(bf == 1)
+        {
+            subRL->_bf = 0;
+            subR->_bf = 0;
+            parent->_bf = -1;
+        }
+        else if(bf == -1)
+        {
+            subRL->_bf = 0;
+            subR->_bf = 1;
+            parent->_bf = 0;
+        }
+        else
+        {
+            subRL->_bf = 0;
+            subR->_bf = 0;
+            parent->_bf = 0;
+        }
+    }    Node* _find(Node* root, const K& key)
     {
         if (!root)
         {
