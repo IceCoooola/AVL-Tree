@@ -116,7 +116,7 @@ public:
                 {
                     if (cur->_bf == 1)
                     {
-                        // ◊Ûµ•–˝
+                        //rotate to left
                         RotateL(parent);
                     }
                     else // cur->_bf == -1
